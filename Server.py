@@ -79,10 +79,16 @@ def submit_score():
 def leaderboard():
     """
     Эндпоинт для получения всей таблицы лидеров с ID.
+    Сортировка по количеству собранных подарков (gifts_collected).
     """
     with open(LEADERBOARD_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
-    return jsonify({"leaderboard": data}), 200
+    
+    # Сортировка по количеству собранных подарков (gifts_collected) в убывающем порядке
+    sorted_data = sorted(data, key=lambda x: x['gifts_collected'], reverse=True)
+    
+    return jsonify({"leaderboard": sorted_data}), 200
+
 
 
 @app.route("/delete_score/<score_id>", methods=["DELETE"])
